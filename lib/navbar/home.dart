@@ -8,6 +8,7 @@ import 'package:jezt_news/constants/constats.dart';
 import 'package:jezt_news/models/news_article.dart';
 import 'package:jezt_news/utils/theme.dart';
 import 'package:jezt_news/widgets/custom_snackbar.dart';
+import 'package:jezt_news/widgets/custom_textfield.dart';
 import 'package:lottie/lottie.dart';
 
 class HomePage extends StatefulWidget {
@@ -63,11 +64,12 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Text(
             'JEZT News',
-            style: GoogleFonts.ubuntu(),
+            style: GoogleFonts.ubuntu(
+                fontWeight: FontWeight.bold, color: Colors.red),
           ),
-          centerTitle: true,
         ),
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -79,9 +81,12 @@ class _HomePageState extends State<HomePage> {
                 return Column(
                   children: [
                     SizedBox(
-                        width: scrWidth * 0.8,
-                        child: TextField(
-                          controller: searchController,
+                      height: scrHeight * 0.01,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: AdlTextField(
+                          suffixIcon: Icon(Icons.search),
                           onChanged: (value) {
                             articleSort = [];
                             if (searchController.text.isEmpty) {
@@ -90,15 +95,9 @@ class _HomePageState extends State<HomePage> {
                               getSortedArticles(value);
                             }
                           },
-                          decoration: InputDecoration(
-                            labelText: 'Search News',
-                            border: InputBorder.none,
-                            suffixIcon: IconButton(
-                              icon: const Icon(Icons.search),
-                              onPressed: () {},
-                            ),
-                          ),
-                        )),
+                          controller: searchController,
+                          label: 'Search news'),
+                    ),
                     if (snapshot.connectionState == ConnectionState.waiting)
                       Center(
                           child: SizedBox(
@@ -128,7 +127,7 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                       ),
-                    articleSort.isEmpty
+                    articleSort.isEmpty && !snapshot.hasError
                         ? Center(
                             child: Column(
                             children: [
