@@ -24,7 +24,7 @@ newsTile(context, String title, String description, String publishAt,
             height: scrHeight * 0.2,
             width: scrWidth * 0.88,
             decoration: BoxDecoration(
-              color: Colors.grey.shade200,
+              color: Theme.of(context).scaffoldBackgroundColor,
               boxShadow: const [
                 BoxShadow(spreadRadius: 2, color: Colors.white)
               ],

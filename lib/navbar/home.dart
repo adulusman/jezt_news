@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -61,15 +62,40 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return ThemeSwitchingArea(
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.deepPurple.shade200,
           centerTitle: true,
           title: Text(
             'JEZT News',
             style: GoogleFonts.ubuntu(
                 fontWeight: FontWeight.bold, color: Colors.red),
           ),
+          actions: [
+            ThemeSwitcher.withTheme(
+              builder: (_, switcher, theme) {
+                return IconButton(
+                  onPressed: () => switcher.changeTheme(
+                    theme: theme.brightness == Brightness.light
+                        ? ThemeData.dark(useMaterial3: true)
+                        : ThemeData.light(useMaterial3: true),
+                  ),
+                  icon: theme.brightness == Brightness.light
+                      ? Icon(
+                          Icons.brightness_3,
+                          size: 25,
+                          color: Colors.black,
+                        )
+                      : Icon(
+                          Icons.brightness_7,
+                          size: 25,
+                          color: Colors.white,
+                        ),
+                );
+              },
+            ),
+          ],
         ),
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -148,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                             itemCount: articleSort.length,
                             itemBuilder: (context, index) {
                               var data = articleSort[index];
-
+                              
                               return newsTile(
                                   context,
                                   data['title'] ?? '',
